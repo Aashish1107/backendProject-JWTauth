@@ -52,7 +52,7 @@ const updateGoal = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id || req.user.role=='admin') {
+  if (goal.user.toString() !== req.user.id && req.user.role!=='admin') {
     res.status(401)
     throw new Error('User not authorized')
   }
@@ -82,7 +82,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id || req.user.role=='admin') {
+  if (goal.user.toString() !== req.user.id && req.user.role!=='admin') {
     res.status(401)
     throw new Error('User not authorized')
   }
