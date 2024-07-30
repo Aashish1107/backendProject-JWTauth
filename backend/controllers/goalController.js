@@ -7,13 +7,14 @@ const User = require('../models/userModel')
 // @route   GET /api/goals
 // @access  Private
 const getGoals = asyncHandler(async (req, res) => {
-  if(user.role!=='admin'){  
+  if(req.user.role!=='admin'){  
     const goals = await Goal.find({ user: req.user.id })
+    res.status(200).json(goals)
   }
   else{
     const goals= await Goal.find()
+    res.status(200).json(goals)
   }
-  res.status(200).json(goals)
 })
 
 // @desc    Set goal
