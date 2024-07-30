@@ -7,8 +7,12 @@ const User = require('../models/userModel')
 // @route   GET /api/goals
 // @access  Private
 const getGoals = asyncHandler(async (req, res) => {
-  const goals = await Goal.find({ user: req.user.id })
-
+  if(user.role!=='admin'){  
+    const goals = await Goal.find({ user: req.user.id })
+  }
+  else{
+    const goals= await Goal.find()
+  }
   res.status(200).json(goals)
 })
 
@@ -47,7 +51,7 @@ const updateGoal = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  if (goal.user.toString() !== req.user.id || req.user.role=='admin') {
     res.status(401)
     throw new Error('User not authorized')
   }
@@ -77,7 +81,7 @@ const deleteGoal = asyncHandler(async (req, res) => {
   }
 
   // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  if (goal.user.toString() !== req.user.id || req.user.role=='admin') {
     res.status(401)
     throw new Error('User not authorized')
   }
