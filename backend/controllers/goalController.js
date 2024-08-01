@@ -21,10 +21,15 @@ const getGoals = asyncHandler(async (req, res) => {
 // @route   POST /api/goals
 // @access  Private
 const setGoal = asyncHandler(async (req, res) => {
-  if (!req.body.title || !req.body.upload) {
+  if (!req.body.title) {
     res.status(400)
-    throw new Error('Please add a text field')
+    throw new Error('Title missing')
   }
+  if (!req.body.imgUrl && !req.body.videoUrl) {
+    res.status(400)
+    throw new Error('Title missing')
+  }
+  
 
   const goal = await Goal.create({
     title: req.body.title,
@@ -33,6 +38,8 @@ const setGoal = asyncHandler(async (req, res) => {
     location: req.body.loc,
     age: req.body.agegroup,
     description: req.body.desc,
+    imgUrl: req.body.imgUrl,
+    videoUrl: req.body.videoUrl
   })
 
   res.status(200).json(goal)

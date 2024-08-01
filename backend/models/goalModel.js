@@ -11,6 +11,12 @@ const goalSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please add a title'],
     },
+    imgUrl: {
+      type: String,
+    },
+    videoUrl: {
+      type: String,
+    },
     target: {
       type: String,
       required: [true, 'Please add a target gender'],

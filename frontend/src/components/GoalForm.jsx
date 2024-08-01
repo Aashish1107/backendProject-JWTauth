@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createGoal } from '../features/goals/goalSlice'
+import axios from 'axios'
 
 function GoalForm() {
   const [title, setTitle] = useState('')
+  const [img, setImg] = useState(null)
   const [upload,setUpload]= useState(null)
   const [targetgender, setTargetgender] = useState('')
   const [loc, setLoc] = useState('')
@@ -12,12 +14,34 @@ function GoalForm() {
 
   const dispatch = useDispatch()
 
-  const onSubmit = (e) => {
-    e.preventDefault()
+  const uploadFile = async(type) =>{
+    const data= new FormData();
+    data.append("file", type === 'image' ? 'image' : 'video');
+    data.append("upload_preset", type === 'image'? 'image_preset': 'video_preset');
+    data.append("api_key", process.env.CLOUDINARY_API_KEY);
 
-    dispatch(createGoal( {title,upload,targetgender,loc,agegroup,desc} ))
+    try{
+      let cloudName= 'dhotvxifv';
+      let resourceType = type === 'image' ? 'image' : 'video';
+      let api = 'https://api.cloudinary.com/v1_1/'+cloudName+'/'+resourceType+'/upload';
+
+      const res = await axios.post(api, data);
+      const {secure_url}= res.data;
+      return {secure_url}
+      
+    } catch (error){
+      console.log(error);
+    } 
+  }
+
+  const onSubmit = async(e) => {
+    e.preventDefault()
+    const imgUrl=await uploadFile('image');
+    const videoUrl= await uploadFile('video');
+    //dispatch(createGoal( {title,imgUrl,videoUrl,targetgender,loc,agegroup,desc} ))
     setTitle('')
     setUpload(null)
+    setImg(null)
     setTargetgender('')
     setLoc('')
     setAgegroup('')
@@ -28,14 +52,21 @@ function GoalForm() {
     <section className='form'>
       <form onSubmit={onSubmit}>
         <div className='form-group'>
-          <label htmlFor='text'>Upload Image/Video</label>
+          <label htmlFor='text'>Upload Video</label>
           <input 
             type='file'
             name='upload'
             id='upload'
-            value={upload}
-            onChange={(e)=>setUpload(e.target.value)}
-            required
+            accept="video/*"
+            onChange={(e)=>setUpload((prev)=>e.target.files[0])}
+          />
+          <label htmlFor='text'>Upload Image</label>
+          <input 
+            type='file'
+            name='img'
+            id='img'
+            accept="image/*"
+            onChange={(e)=>setImg((prev)=>e.target.files[0])}
           />
           <input
             type='text'
