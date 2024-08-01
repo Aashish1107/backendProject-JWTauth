@@ -7,9 +7,24 @@ const goalSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    text: {
+    title: {
       type: String,
-      required: [true, 'Please add a text value'],
+      required: [true, 'Please add a title'],
+    },
+    target: {
+      type: String,
+      required: [true, 'Please add a target gender'],
+    },
+    location: {
+      type: String,
+      required: [true, 'Please add a location'],
+    },
+    age: {
+      type: String,
+      required: [true, 'Please add an age group'],
+    },
+    description: {
+      type: String,
     },
   },
   {
