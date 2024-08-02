@@ -20,7 +20,7 @@ function GoalForm() {
     data.append("upload_preset", type === 'image'? 'image_preset': 'video_preset');
 
     try{
-      let cloudName= 'dhotvxifv';
+      let cloudName='dhotvxifv';
       let resourceType = type === 'image' ? 'image' : 'video';
       let api = 'https://api.cloudinary.com/v1_1/'+cloudName+'/'+resourceType+'/upload';
 

@@ -9,6 +9,7 @@ import Spinner from '../components/Spinner'
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
+    role:'',
     email: '',
     password: '',
     password2: '',
@@ -51,6 +52,7 @@ function Register() {
       const userData = {
         name,
         email,
+        role,
         password,
       }
 
@@ -81,6 +83,17 @@ function Register() {
               name='name'
               value={name}
               placeholder='Enter your name'
+              onChange={onChange}
+            />
+          </div>
+          <div className='form-group'>
+            <input
+              type='role'
+              className='form-control'
+              id='role'
+              name='role'
+              value={role}
+              placeholder='Type Admin or Advertiser'
               onChange={onChange}
             />
           </div>
