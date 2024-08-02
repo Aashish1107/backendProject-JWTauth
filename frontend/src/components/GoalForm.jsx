@@ -16,9 +16,8 @@ function GoalForm() {
 
   const uploadFile = async(type) =>{
     const data= new FormData();
-    data.append("file", type === 'image' ? 'image' : 'video');
+    data.append("file", type === 'image' ? img : upload);
     data.append("upload_preset", type === 'image'? 'image_preset': 'video_preset');
-    data.append("api_key", process.env.CLOUDINARY_API_KEY);
 
     try{
       let cloudName= 'dhotvxifv';
@@ -36,9 +35,15 @@ function GoalForm() {
 
   const onSubmit = async(e) => {
     e.preventDefault()
-    const imgUrl=await uploadFile('image');
-    const videoUrl= await uploadFile('video');
-    //dispatch(createGoal( {title,imgUrl,videoUrl,targetgender,loc,agegroup,desc} ))
+    let imgUrl=await uploadFile('image');
+    let videoUrl= await uploadFile('video');
+    //const imgUrl='test'
+    //const videoUrl='test'
+    //const iurl= imgUrl.secure_url
+    //const vurl=videoUrl.secure_url
+    imgUrl=imgUrl.secure_url
+    videoUrl=videoUrl.secure_url
+    await dispatch(createGoal( {title,imgUrl,videoUrl,targetgender,loc,agegroup,desc} ))
     setTitle('')
     setUpload(null)
     setImg(null)
